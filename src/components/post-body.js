@@ -10,7 +10,7 @@ export default function PostBody({ content }) {
           data={content}
           renderBlock={({ record }) => {
             if (record.__typename === "DatoCmsImageBlock") {
-              return <GatsbyImage image={record.image.gatsbyImageData} />;
+              return <GatsbyImage image={record.image.gatsbyImageData} alt="" />;
             }
             return (
               <>

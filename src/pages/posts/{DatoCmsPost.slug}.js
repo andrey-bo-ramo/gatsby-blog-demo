@@ -9,6 +9,7 @@ import SectionSeparator from "../../components/section-separator";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 
 export default function Post({ data: { site, post, morePosts } }) {
+  console.log('post', post)
   return (
     <Container>
       <HelmetDatoCms seo={post.seo} favicon={site.favicon} />
@@ -55,6 +56,7 @@ export const query = graphql`
       coverImage {
         gatsbyImageData(width: 1500)
       }
+      featured
       author {
         name
         picture {
@@ -80,6 +82,7 @@ export const query = graphql`
         coverImage {
           small: gatsbyImageData(width: 760)
         }
+        featured
         author {
           name
           picture {
