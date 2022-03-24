@@ -11,6 +11,7 @@ export default function PostPreview({
   excerpt,
   author,
   slug,
+  featured,
 }) {
   return (
     <div>
@@ -22,6 +23,7 @@ export default function PostPreview({
           {title}
         </Link>
       </h3>
+      {featured && <div className="text-red-500">Featured Post</div>}
       <div className="text-lg mb-4">
         <Date dateString={date} />
       </div>

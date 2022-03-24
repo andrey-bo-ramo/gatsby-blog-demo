@@ -1,36 +1,31 @@
 import React from "react";
-import Container from "../components/container";
 import HeroPost from "../components/hero-post";
-import Intro from "../components/intro";
 import MoreStories from "../components/more-stories";
-import Nav from "../components/nav";
-import { HelmetDatoCms } from "gatsby-source-datocms";
 import { graphql } from "gatsby";
-import Button from "../components/button";
+import { HelmetDatoCms } from "gatsby-source-datocms";
+import PageLayout from "../components/page-layout";
 
-export default function Index({ data: { allPosts, allCategory, site, blog } }) {
+export default function Index({ data: { allPosts, blog, site } }) {
   const heroPost = allPosts.nodes[0];
   const morePosts = allPosts.nodes.slice(1);
-  console.log("allPosts", allPosts);
 
   return (
-    <Container>
+    <>
       <HelmetDatoCms seo={blog.seo} favicon={site.favicon} />
-      <Intro />
-      <Nav />
-      {/* {heroPost && (
-        <HeroPost
-          title={heroPost.title}
-          coverImage={heroPost.coverImage}
-          date={heroPost.date}
-          author={heroPost.author}
-          slug={heroPost.slug}
-          excerpt={heroPost.excerpt}
-        />
-      )} */}
-      {/* {morePosts.length > 0 && <MoreStories posts={morePosts} />} */}
-      <Button text={"Пример кнопки"} />
-    </Container>
+      <PageLayout title="Test blog">
+        {heroPost && (
+          <HeroPost
+            title={heroPost.title}
+            coverImage={heroPost.coverImage}
+            date={heroPost.date}
+            author={heroPost.author}
+            slug={heroPost.slug}
+            excerpt={heroPost.excerpt}
+          />
+        )}
+        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+      </PageLayout>
+    </>
   );
 }
 

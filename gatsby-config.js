@@ -3,6 +3,7 @@ require("dotenv").config();
 module.exports = {
   siteMetadata: {
     title: "Gatsby Blog Demo",
+    siteUrl: "https://lively-vacherin-d20005.netlify.app/",
   },
   plugins: [
     "gatsby-plugin-postcss",
@@ -18,5 +19,6 @@ module.exports = {
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
+    "gatsby-plugin-sitemap",
   ],
 };

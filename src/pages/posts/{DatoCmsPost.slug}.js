@@ -1,31 +1,33 @@
 import React from "react";
 import { graphql } from "gatsby";
-import Container from "../../components/container";
-import Header from "../../components/header";
 import MoreStories from "../../components/more-stories";
 import PostBody from "../../components/post-body";
 import PostHeader from "../../components/post-header";
 import SectionSeparator from "../../components/section-separator";
 import { HelmetDatoCms } from "gatsby-source-datocms";
+import PageLayout from "../../components/page-layout";
 
 export default function Post({ data: { site, post, morePosts } }) {
-  console.log('post', post)
+  console.log("post", post);
   return (
-    <Container>
+    <>
       <HelmetDatoCms seo={post.seo} favicon={site.favicon} />
-      <Header />
-      <article>
-        <PostHeader
-          title={post.title}
-          coverImage={post.coverImage}
-          date={post.date}
-          author={post.author}
-        />
-        <PostBody content={post.content} />
-      </article>
-      <SectionSeparator />
-      {morePosts.nodes.length > 0 && <MoreStories posts={morePosts.nodes} />}
-    </Container>
+      <PageLayout title={post.title}>
+        <article>
+          <PostHeader
+            title={post.title}
+            coverImage={post.coverImage}
+            date={post.date}
+            author={post.author}
+            featured={post.featured}
+          />
+
+          <PostBody content={post.content} />
+        </article>
+        <SectionSeparator />
+        {morePosts.nodes.length > 0 && <MoreStories posts={morePosts.nodes} />}
+      </PageLayout>
+    </>
   );
 }
 

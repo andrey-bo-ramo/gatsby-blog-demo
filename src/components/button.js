@@ -1,10 +1,32 @@
-import React from "react";
-import { HocButton } from "./buttons/hocButton";
+import React, { useState } from "react";
 
-function Button(props) {
-  console.log("props", props);
-  const { text, className } = props;
-  return <button className={className}>{text}</button>;
+function HOC(Component) {
+  function Wrapper(props) {
+    const [count, setCount] = useState(0);
+    const handleClick = () => {
+      setCount(count + 1);
+    };
+    return <Component onClick={handleClick} count={count} {...props} />;
+  }
+  return Wrapper;
 }
 
-export default HocButton(Button);
+function Button(props) {
+  const { text, bg, count, onClick } = props;
+  return (
+    <button
+      onClick={onClick}
+      className={`px-3 py-2 rounded-md ${bg} text-white`}
+    >
+      {count}-{text}
+    </button>
+  );
+}
+
+export const LikeButton = HOC((props) => {
+  return <Button {...props} />;
+});
+
+export const DislikeButton = HOC((props) => {
+  return <Button {...props} />;
+});

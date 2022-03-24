@@ -1,42 +1,78 @@
 import React, { useMemo, useState } from "react";
-import { Link } from "gatsby";
 import { graphql } from "gatsby";
+import { HelmetDatoCms } from "gatsby-source-datocms";
+import PageLayout from "../../components/page-layout";
+import PostPreview from "../../components/post-preview";
+import PostsFilter from "../../components/posts-filter";
 
-export default function AllPosts({ data: { allPosts } }) {
+export default function AllPosts({ data: { allPosts, blog, site } }) {
   const [isShowFeatured, setIsShowFeatured] = useState(false);
-  console.log("allPosts", allPosts);
+  const [isShowNewest, setIsShowNewest] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
   const posts = useMemo(() => {
-    return isShowFeatured
-      ? allPosts.nodes.filter((item) => item.featured)
-      : allPosts.nodes;
-  }, [isShowFeatured]);
+    let arr = allPosts.nodes;
+    if (isShowFeatured) {
+      arr = arr.filter((item) => item.featured);
+    }
+    if (isShowNewest) {
+      const oneDay = 86400 * 1000 * 1;
+      arr = arr.filter((item) => {
+        if (new Date().getTime() - new Date(item.date).getTime() < oneDay) {
+          return true;
+        }
+        return false;
+      });
+    }
+    if (searchValue) {
+      arr = arr.filter((item) => {
+        if (item.slug.indexOf(searchValue) >= 0) {
+          return true;
+        }
+        return false;
+      });
+    }
+    return arr;
+  }, [isShowFeatured, isShowNewest, searchValue, allPosts.nodes]);
 
   const handleChangeShowFeatured = () => {
     setIsShowFeatured(!isShowFeatured);
   };
 
+  const handleChangeShowNewest = () => {
+    setIsShowNewest(!isShowNewest);
+  };
+
+  const handleChangeSearch = (e) => {
+    const { value } = e.target;
+    setSearchValue(value);
+  };
+
   return (
     <>
-      <div className="px-2 pt-2 pb-3 space-y-1">
-        <Link
-          to={`/`}
-          className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-        >
-          Main Page
-        </Link>
-      </div>
-      <section className="flex-col md:flex-row flex items-center md:justify-between mt-16 mb-16 md:mb-12">
-        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight md:pr-8">
-          All Posts.
-        </h1>
-      </section>
-      <label>
-        <span>Show only featured posts</span>
-        <input type="checkbox" onChange={handleChangeShowFeatured} />
-      </label>
-      {posts.map((item) => (
-        <div key={item.title}>{item.title}</div>
-      ))}
+      <HelmetDatoCms seo={blog.seo} favicon={site.favicon} />
+      <PageLayout title="All Posts">
+        <PostsFilter
+          onChangeSearch={handleChangeSearch}
+          onChangeFeatured={handleChangeShowFeatured}
+          onChangeNewest={handleChangeShowNewest}
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-32">
+          {posts.map((post) => (
+            <PostPreview
+              key={post.slug}
+              title={post.title}
+              coverImage={post.coverImage}
+              date={post.date}
+              author={post.author}
+              slug={post.slug}
+              excerpt={post.excerpt}
+              featured={post.featured}
+            />
+          ))}
+        </div>
+      </PageLayout>
     </>
   );
 }
