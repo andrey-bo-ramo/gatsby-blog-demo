@@ -25,8 +25,8 @@ export default function PostHeader({
         </div>
         {featured && (
           <div className="flex space-x-5 mb-5">
-            <LikeButton text="Likes" bg="bg-green-500" />
-            <DislikeButton text="Dislike" bg="bg-red-500" />
+            <LikeButton text="Likes" />
+            <DislikeButton text="Dislike" />
           </div>
         )}
         <div className="mb-6 text-lg">

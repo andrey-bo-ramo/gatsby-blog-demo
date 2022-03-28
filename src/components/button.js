@@ -1,32 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 
-function HOC(Component) {
+function HOC(Component, params) {
   function Wrapper(props) {
-    const [count, setCount] = useState(0);
-    const handleClick = () => {
-      setCount(count + 1);
-    };
-    return <Component onClick={handleClick} count={count} {...props} />;
+    return <Component {...props} {...params} />;
   }
   return Wrapper;
 }
 
 function Button(props) {
-  const { text, bg, count, onClick } = props;
+  const { text, bg, onClick } = props;
   return (
     <button
       onClick={onClick}
       className={`px-3 py-2 rounded-md ${bg} text-white`}
     >
-      {count}-{text}
+      {text}
     </button>
   );
 }
 
-export const LikeButton = HOC((props) => {
-  return <Button {...props} />;
+export const LikeButton = HOC(Button, {
+  bg: "bg-green-500",
+  onClick: () => console.log("Like Btn Click"),
 });
 
-export const DislikeButton = HOC((props) => {
-  return <Button {...props} />;
-});
+export const DislikeButton = HOC(Button, { bg: "bg-red-500" });

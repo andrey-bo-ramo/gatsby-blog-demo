@@ -9,31 +9,35 @@ export default function AllPosts({ data: { allPosts, blog, site } }) {
   const [isShowFeatured, setIsShowFeatured] = useState(false);
   const [isShowNewest, setIsShowNewest] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const featuredPosts = useMemo(() => {
+    return allPosts.nodes.filter((item) => item.featured);
+  }, [allPosts]);
+  console.log("featuredPosts", featuredPosts);
 
+  // if (searchValue) {
+  //   arr = arr.filter((item) => {
+  //     if (item.slug.indexOf(searchValue) >= 0) {
+  //       return true;
+  //     }
+  //     return false;
+  //   });
+  // }
   const posts = useMemo(() => {
-    let arr = allPosts.nodes;
-    if (isShowFeatured) {
-      arr = arr.filter((item) => item.featured);
-    }
+    const arr = [...allPosts.nodes];
     if (isShowNewest) {
-      const oneDay = 86400 * 1000 * 1;
-      arr = arr.filter((item) => {
-        if (new Date().getTime() - new Date(item.date).getTime() < oneDay) {
-          return true;
+      return arr.sort((a, b) => {
+        if (new Date(a.date) > new Date(b.date)) {
+          return -1;
         }
-        return false;
-      });
-    }
-    if (searchValue) {
-      arr = arr.filter((item) => {
-        if (item.slug.indexOf(searchValue) >= 0) {
-          return true;
+        if (new Date(a.date) < new Date(b.date)) {
+          return 1;
         }
-        return false;
+        return 0;
       });
+    } else {
+      return allPosts.nodes;
     }
-    return arr;
-  }, [isShowFeatured, isShowNewest, searchValue, allPosts.nodes]);
+  }, [allPosts, isShowNewest]);
 
   const handleChangeShowFeatured = () => {
     setIsShowFeatured(!isShowFeatured);

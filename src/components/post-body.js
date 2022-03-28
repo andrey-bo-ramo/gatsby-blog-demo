@@ -1,8 +1,9 @@
 import React from "react";
-import { GatsbyImage } from "gatsby-plugin-image";
 import { StructuredText } from "react-datocms";
+import PostGallery from "./post-gallery";
+import { GatsbyImage } from "gatsby-plugin-image";
 
-export default function PostBody({ content }) {
+export default function PostBody({ content, gallery }) {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="prose prose-lg prose-blue">
@@ -23,6 +24,7 @@ export default function PostBody({ content }) {
           }}
         />
       </div>
+      {gallery.length && <PostGallery images={gallery} />}
     </div>
   );
 }
