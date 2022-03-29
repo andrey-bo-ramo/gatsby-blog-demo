@@ -48,9 +48,24 @@ export const query = graphql`
         value
         blocks {
           __typename
-          id: originalId
-          image {
-            gatsbyImageData(width: 700)
+          ... on DatoCmsImageBlock {
+            id: originalId
+            model {
+              apiKey
+            }
+            image {
+              gatsbyImageData(width: 700)
+            }
+            gallery {
+              gatsbyImageData(width: 700)
+            }
+          }
+          ... on DatoCmsQueryBlock {
+            id: originalId
+            model {
+              apiKey
+            }
+            query
           }
         }
       }

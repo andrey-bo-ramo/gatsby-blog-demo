@@ -12,8 +12,16 @@ export default function PostBody({ content, gallery }) {
           renderBlock={({ record }) => {
             if (record.__typename === "DatoCmsImageBlock") {
               return (
-                <GatsbyImage image={record.image.gatsbyImageData} alt="" />
+                <>
+                  {record.image && (
+                    <GatsbyImage image={record.image.gatsbyImageData} alt="" />
+                  )}
+                  {record.gallery && <PostGallery images={record.gallery} />}
+                </>
               );
+            }
+            if (record.__typename === "DatoCmsQueryBlock") {
+              return <p className="text-7xl text-red-700">{record.query}</p>;
             }
             return (
               <>
@@ -24,7 +32,6 @@ export default function PostBody({ content, gallery }) {
           }}
         />
       </div>
-      {gallery.length && <PostGallery images={gallery} />}
     </div>
   );
 }
