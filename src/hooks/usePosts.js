@@ -10,7 +10,7 @@ function sortByCreatedAt(a, b) {
   return 0;
 }
 
-const usePosts = (data = []) => {
+const usePosts = (data) => {
   const [values, setValues] = useState({
     allPostsById: {},
     allIds: [],
@@ -54,22 +54,31 @@ const usePosts = (data = []) => {
   }, [data]);
 
   const getFilteredData = (keys) => {
-    const { isShowFeatured, isShowNewest } = keys;
+    const { isShowFeatured, isShowNewest, searchValue } = keys;
+    let arr = [];
     if (isShowFeatured && !isShowNewest) {
-      setActivePostsIds(values.featuredIds);
+      arr = values.featuredIds;
     }
     if (!isShowFeatured && isShowNewest) {
-      setActivePostsIds(values.newestIds);
+      arr = values.newestIds;
     }
     if (isShowFeatured && isShowNewest) {
-      setActivePostsIds(values.newestFeaturedIds);
+      arr = values.newestFeaturedIds;
     }
     if (!isShowFeatured && !isShowNewest) {
-      setActivePostsIds(values.allIds);
+      arr = values.allIds;
     }
+
+    if (searchValue) {
+      arr = arr.filter(
+        (id) => values.allPostsById[id].slug.indexOf(searchValue) >= 0
+      );
+    }
+
+    return arr;
   };
 
-  return { values, activePostsIds, getFilteredData };
+  return { values, activePostsIds, setActivePostsIds, getFilteredData };
 };
 
 export default usePosts;

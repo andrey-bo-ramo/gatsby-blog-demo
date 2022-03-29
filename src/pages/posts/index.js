@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { graphql } from "gatsby";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 import PageLayout from "../../components/page-layout";
@@ -11,40 +11,50 @@ export default function AllPosts({ data: { allPosts, blog, site } }) {
   const [isShowNewest, setIsShowNewest] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const posts = usePosts(allPosts.nodes);
-  const { activePostsIds, values, getFilteredData } = posts;
+  const { activePostsIds, values, getFilteredData, setActivePostsIds } = posts;
   const { allPostsById } = values;
 
   const handleChangeShowFeatured = useCallback(
     (e) => {
       const isChecked = e.target.checked;
-      console.log(e);
-      getFilteredData({
+      const filteredData = getFilteredData({
         isShowFeatured: isChecked,
         isShowNewest,
+        searchValue,
       });
+      setActivePostsIds(filteredData);
       setIsShowFeatured(isChecked);
     },
-    [getFilteredData, isShowNewest]
+    [getFilteredData, setActivePostsIds, isShowNewest, searchValue]
   );
 
   const handleChangeShowNewest = useCallback(
     (e) => {
       const isChecked = e.target.checked;
-      getFilteredData({
+      const filteredData = getFilteredData({
         isShowFeatured,
         isShowNewest: isChecked,
+        searchValue,
       });
+      setActivePostsIds(filteredData);
       setIsShowNewest(isChecked);
     },
-    [getFilteredData, isShowFeatured]
+    [getFilteredData, setActivePostsIds, isShowFeatured, searchValue]
   );
 
-  const handleChangeSearch = (e) => {
-    const { value } = e.target;
-    setSearchValue(value);
-  };
-
-  console.log("searchValue", searchValue);
+  const handleChangeSearch = useCallback(
+    (e) => {
+      const { value } = e.target;
+      const filteredData = getFilteredData({
+        isShowFeatured,
+        isShowNewest,
+        searchValue: value,
+      });
+      setActivePostsIds(filteredData);
+      setSearchValue(value);
+    },
+    [getFilteredData, setActivePostsIds, isShowFeatured, isShowNewest]
+  );
 
   return (
     <>
