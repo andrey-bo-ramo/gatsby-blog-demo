@@ -22,7 +22,7 @@ export default function Post({ data: { site, post, morePosts } }) {
             featured={post.featured}
           />
 
-          <PostBody content={post.content} gallery={post.gallery} />
+          <PostBody content={post.content} />
         </article>
         <SectionSeparator />
         {morePosts.nodes.length > 0 && <MoreStories posts={morePosts.nodes} />}
@@ -56,6 +56,12 @@ export const query = graphql`
             image {
               gatsbyImageData(width: 700)
             }
+          }
+          ... on DatoCmsGalleryBlock {
+            id: originalId
+            model {
+              apiKey
+            }
             gallery {
               gatsbyImageData(width: 700)
             }
@@ -72,9 +78,6 @@ export const query = graphql`
       date
       coverImage {
         gatsbyImageData(width: 1500)
-      }
-      gallery {
-        gatsbyImageData(width: 760)
       }
       featured
       author {
