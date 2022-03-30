@@ -2,7 +2,6 @@ import React from "react";
 import Avatar from "../components/avatar";
 import Date from "../components/date";
 import CoverImage from "../components/cover-image";
-import { LikeButton, DislikeButton } from "./button";
 
 export default function PostHeader({
   title,
@@ -23,12 +22,6 @@ export default function PostHeader({
         <div className="block md:hidden mb-6">
           <Avatar name={author?.name} picture={author?.picture} />
         </div>
-        {featured && (
-          <div className="flex space-x-5 mb-5">
-            <LikeButton text="Likes" />
-            <DislikeButton text="Dislike" />
-          </div>
-        )}
         <div className="mb-6 text-lg">
           <Date dateString={date} />
         </div>
