@@ -3,7 +3,12 @@ import Container from "./container";
 import Nav from "./nav";
 import Intro from "./intro";
 
-export default function PageLayout(props) {
+interface IPageLayoutProps {
+  children: JSX.Element;
+  title: string;
+}
+
+export default function PageLayout(props: IPageLayoutProps) {
   const { children, title } = props;
 
   return (

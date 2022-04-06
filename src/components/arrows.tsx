@@ -1,6 +1,11 @@
 import React from "react";
 
-function PrevArrow(props) {
+interface IArrowProps {
+  disabled: boolean;
+  onClick: () => void;
+}
+
+function PrevArrow(props: IArrowProps) {
   const { disabled, onClick } = props;
 
   return (
@@ -28,7 +33,7 @@ function PrevArrow(props) {
   );
 }
 
-function NextArrow(props) {
+function NextArrow(props: IArrowProps) {
   const { disabled, onClick } = props;
 
   return (

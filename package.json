@@ -13,7 +13,10 @@
     "build": "gatsby build && node ./sitemap.js",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "postgenerate": "node ./sitemap.js"
+    "postgenerate": "node ./sitemap.js",
+    "lint": "eslint . --ext ts --ext tsx'",
+    "test": "npm run type-check && npm run lint",
+    "type-check": "tsc --pretty --noEmit"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.4.1",
@@ -26,6 +29,7 @@
     "gatsby-plugin-react-helmet": "^5.0.0",
     "gatsby-plugin-sharp": "^4.0.0",
     "gatsby-plugin-sitemap": "^5.10.2",
+    "gatsby-plugin-typescript": "^4.11.1",
     "gatsby-source-datocms": "^3.0.10",
     "gatsby-transformer-sharp": "^4.0.0",
     "postcss": "^8.3.6",
@@ -33,7 +37,8 @@
     "react-datocms": "^1.6.3",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
-    "tailwindcss": "^2.0.3"
+    "tailwindcss": "^2.0.3",
+    "typescript": "^4.6.3"
   },
   "resolutions": {
     "trim": "0.0.3",
@@ -45,5 +50,18 @@
     "object-path": "0.11.8",
     "nth-check": "2.0.1",
     "ansi-regex": "5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.23",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
+    "eslint": "^8.12.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0"
   }
 }
