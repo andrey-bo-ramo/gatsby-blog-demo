@@ -3,6 +3,7 @@ import Avatar from "../components/avatar";
 import Date from "../components/date";
 import CoverImage from "./cover-image";
 import { Link } from "gatsby";
+import { IPostNode } from "interfaces/common";
 
 export default function PostPreview({
   title,
@@ -12,7 +13,7 @@ export default function PostPreview({
   author,
   slug,
   featured,
-}) {
+}: Omit<IPostNode, "category" | "id">) {
   return (
     <div>
       <div className="mb-5">
@@ -28,7 +29,7 @@ export default function PostPreview({
         <Date dateString={date} />
       </div>
       <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
-      <Avatar name={author?.name} picture={author?.picture} />
+      <Avatar name={author.name} picture={author.picture} />
     </div>
   );
 }

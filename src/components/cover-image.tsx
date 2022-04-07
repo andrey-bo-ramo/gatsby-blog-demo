@@ -1,9 +1,15 @@
 import React from "react";
-import { GatsbyImage } from "gatsby-plugin-image";
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import cn from "classnames";
 import { Link } from "gatsby";
 
-export default function CoverImage({ title, fluid, slug }) {
+interface ICoverImageProps {
+  title: string;
+  fluid: IGatsbyImageData;
+  slug: string;
+}
+
+export default function CoverImage({ title, fluid, slug }: ICoverImageProps) {
   const image = (
     <GatsbyImage
       image={fluid}

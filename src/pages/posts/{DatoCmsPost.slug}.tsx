@@ -6,26 +6,46 @@ import PostHeader from "../../components/post-header";
 import SectionSeparator from "../../components/section-separator";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 import PageLayout from "../../components/page-layout";
+import { IPostNode, ILinkTag, IMetaTag } from "interfaces/common";
 
-export default function Post({ data: { site, post, morePosts } }) {
+interface IPostPageProps {
+  data: {
+    morePosts: {
+      nodes: IPostNode[];
+    };
+    post: IPostNode;
+    site: {
+      favicon: {
+        tags: Array<ILinkTag | IMetaTag>;
+      };
+    };
+  };
+}
+
+export default function Post(props: IPostPageProps) {
+  const { morePosts, post, site } = props.data;
   console.log("post", post);
   return (
     <>
       <HelmetDatoCms seo={post.seo} favicon={site.favicon} />
       <PageLayout title={post.title}>
-        <article>
-          <PostHeader
-            title={post.title}
-            coverImage={post.coverImage}
-            date={post.date}
-            author={post.author}
-            featured={post.featured}
-          />
+        <>
+          <article>
+            <PostHeader
+              slug={post.slug}
+              title={post.title}
+              coverImage={post.coverImage}
+              date={post.date}
+              author={post.author}
+            />
 
-          <PostBody content={post.content} />
-        </article>
-        <SectionSeparator />
-        {morePosts.nodes.length > 0 && <MoreStories posts={morePosts.nodes} />}
+            <PostBody content={post.content} />
+          </article>
+          <SectionSeparator />
+          {morePosts.nodes.length > 0 && (
+            <MoreStories posts={morePosts.nodes} />
+          )}
+        </>
       </PageLayout>
     </>
   );
@@ -77,7 +97,8 @@ export const query = graphql`
       }
       date
       coverImage {
-        gatsbyImageData(width: 1500)
+        large: gatsbyImageData(width: 1500)
+        small: gatsbyImageData(width: 760)
       }
       featured
       author {

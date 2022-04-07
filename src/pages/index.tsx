@@ -4,57 +4,7 @@ import MoreStories from "../components/more-stories";
 import { graphql } from "gatsby";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 import PageLayout from "../components/page-layout";
-import { IGatsbyImageData } from "gatsby-plugin-image";
-
-interface ILinkTagAttr {
-  href: string;
-  rel: string;
-  sizes: string;
-}
-
-interface IMetaTagAttr {
-  content: string;
-  name: string;
-}
-
-interface ILinkTag {
-  tagName: string;
-  attributes: ILinkTagAttr;
-}
-
-interface IMetaTag {
-  tagName: string;
-  attributes: IMetaTagAttr;
-}
-
-interface ITitleTag {
-  tagName: string;
-  content: string;
-}
-
-interface IPostNodeAuthor {
-  name: string;
-  picture: IGatsbyImageData;
-}
-
-interface IPostNodeCategory {
-  name: string;
-  slug: string;
-}
-
-interface IPostNode {
-  author: IPostNodeAuthor;
-  category: IPostNodeCategory;
-  coverImage: {
-    large: IGatsbyImageData;
-    small: IGatsbyImageData;
-  };
-  date: string;
-  excerpt: string;
-  featured: boolean;
-  slug: string;
-  title: string;
-}
+import { IPostNode, IMetaTag, ITitleTag, ILinkTag } from "interfaces/common";
 
 interface IIndexProps {
   data: {
@@ -84,16 +34,7 @@ export default function Index(props: IIndexProps) {
       <HelmetDatoCms seo={blog.seo} favicon={site.favicon} />
       <PageLayout title="Test blog">
         <>
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
+          {heroPost && <HeroPost {...heroPost} />}
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
         </>
       </PageLayout>

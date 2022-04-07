@@ -1,21 +1,41 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, ChangeEvent } from "react";
 import { graphql } from "gatsby";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 import PageLayout from "../../components/page-layout";
 import PostPreview from "../../components/post-preview";
 import PostsFilter from "../../components/posts-filter";
 import usePosts from "../../hooks/usePosts";
+import { IPostNode, IMetaTag, ITitleTag, ILinkTag } from "interfaces/common";
 
-export default function AllPosts({ data: { allPosts, blog, site } }) {
-  const [isShowFeatured, setIsShowFeatured] = useState(false);
-  const [isShowNewest, setIsShowNewest] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+interface IIndexProps {
+  data: {
+    allPosts: {
+      nodes: Array<IPostNode>;
+    };
+    blog: {
+      seo: {
+        tags: Array<IMetaTag | ITitleTag>;
+      };
+    };
+    site: {
+      favicon: {
+        tags: Array<ILinkTag | IMetaTag>;
+      };
+    };
+  };
+}
+
+export default function AllPosts(props: IIndexProps) {
+  const { allPosts, blog, site } = props.data;
+  const [isShowFeatured, setIsShowFeatured] = useState<boolean>(false);
+  const [isShowNewest, setIsShowNewest] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
   const posts = usePosts(allPosts.nodes);
   const { activePostsIds, values, getFilteredData, setActivePostsIds } = posts;
   const { allPostsById } = values;
 
   const handleChangeShowFeatured = useCallback(
-    (e) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       const isChecked = e.target.checked;
       const filteredData = getFilteredData({
         isShowFeatured: isChecked,
@@ -29,7 +49,7 @@ export default function AllPosts({ data: { allPosts, blog, site } }) {
   );
 
   const handleChangeShowNewest = useCallback(
-    (e) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       const isChecked = e.target.checked;
       const filteredData = getFilteredData({
         isShowFeatured,
@@ -43,7 +63,7 @@ export default function AllPosts({ data: { allPosts, blog, site } }) {
   );
 
   const handleChangeSearch = useCallback(
-    (e) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       const filteredData = getFilteredData({
         isShowFeatured,
@@ -60,29 +80,31 @@ export default function AllPosts({ data: { allPosts, blog, site } }) {
     <>
       <HelmetDatoCms seo={blog.seo} favicon={site.favicon} />
       <PageLayout title="All Posts">
-        <PostsFilter
-          onChangeSearch={handleChangeSearch}
-          onChangeFeatured={handleChangeShowFeatured}
-          onChangeNewest={handleChangeShowNewest}
-        />
+        <>
+          <PostsFilter
+            onChangeSearch={handleChangeSearch}
+            onChangeFeatured={handleChangeShowFeatured}
+            onChangeNewest={handleChangeShowNewest}
+          />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-32">
-          {activePostsIds.map((id) => {
-            const post = allPostsById[id];
-            return (
-              <PostPreview
-                key={post.slug}
-                title={post.title}
-                coverImage={post.coverImage}
-                date={post.date}
-                author={post.author}
-                slug={post.slug}
-                excerpt={post.excerpt}
-                featured={post.featured}
-              />
-            );
-          })}
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-32">
+            {activePostsIds.map((id) => {
+              const post = allPostsById[id];
+              return (
+                <PostPreview
+                  key={post.slug}
+                  title={post.title}
+                  coverImage={post.coverImage}
+                  date={post.date}
+                  author={post.author}
+                  slug={post.slug}
+                  excerpt={post.excerpt}
+                  featured={post.featured}
+                />
+              );
+            })}
+          </div>
+        </>
       </PageLayout>
     </>
   );

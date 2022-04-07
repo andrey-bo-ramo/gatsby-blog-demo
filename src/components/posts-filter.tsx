@@ -1,6 +1,12 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 
-export default function PostsFilter(props) {
+interface IPostsFilterProps {
+  onChangeFeatured: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChangeNewest: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChangeSearch: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function PostsFilter(props: IPostsFilterProps) {
   const { onChangeFeatured, onChangeNewest, onChangeSearch } = props;
 
   return (

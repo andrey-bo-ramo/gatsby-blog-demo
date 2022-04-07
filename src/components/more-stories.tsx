@@ -1,7 +1,12 @@
+import { IPostNode } from "interfaces/common";
 import React from "react";
 import PostPreview from "../components/post-preview";
 
-export default function MoreStories({ posts }) {
+interface IMoreStoriesProps {
+  posts: IPostNode[];
+}
+
+export default function MoreStories({ posts }: IMoreStoriesProps) {
   return (
     <section>
       <h2 className="mb-8 text-6xl md:text-7xl font-bold tracking-tighter leading-tight">
@@ -9,16 +14,7 @@ export default function MoreStories({ posts }) {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-32">
         {posts.map((post) => (
-          <PostPreview
-            key={post.slug}
-            title={post.title}
-            coverImage={post.coverImage}
-            date={post.date}
-            author={post.author}
-            slug={post.slug}
-            excerpt={post.excerpt}
-            featured={post.featured}
-          />
+          <PostPreview key={post.slug} {...post} />
         ))}
       </div>
     </section>

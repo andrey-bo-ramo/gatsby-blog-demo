@@ -1,6 +1,7 @@
+import { IPostNode } from "interfaces/common";
 import { useEffect, useState } from "react";
 
-function sortByCreatedAt(a, b) {
+function sortByCreatedAt(a: IPostNode, b: IPostNode): number {
   if (new Date(a.date) > new Date(b.date)) {
     return -1;
   }
@@ -10,24 +11,42 @@ function sortByCreatedAt(a, b) {
   return 0;
 }
 
-const usePosts = (data) => {
-  const [values, setValues] = useState({
+interface IUsePostsValues {
+  allPostsById: {
+    [key: string]: IPostNode;
+  };
+  allIds: string[];
+  newestIds: string[];
+  featuredIds: string[];
+  newestFeaturedIds: string[];
+}
+
+interface IUsePostsFilteredKeys {
+  isShowFeatured: boolean;
+  isShowNewest: boolean;
+  searchValue: string;
+}
+
+const usePosts = (data: IPostNode[]) => {
+  const [values, setValues] = useState<IUsePostsValues>({
     allPostsById: {},
     allIds: [],
     newestIds: [],
     featuredIds: [],
     newestFeaturedIds: [],
   });
-  const [activePostsIds, setActivePostsIds] = useState([]);
+  const [activePostsIds, setActivePostsIds] = useState<string[]>([]);
 
   useEffect(() => {
     const arr = [...data];
     const sortedArr = [...data].sort(sortByCreatedAt);
-    const allPostsById = {};
-    const allIds = [];
-    const newestIds = [];
-    const featuredIds = [];
-    const newestFeaturedIds = [];
+    const allPostsById: {
+      [key: string]: IPostNode;
+    } = {};
+    const allIds: string[] = [];
+    const newestIds: string[] = [];
+    const featuredIds: string[] = [];
+    const newestFeaturedIds: string[] = [];
     arr.forEach((item) => {
       allPostsById[item.id] = {
         ...item,
@@ -53,9 +72,9 @@ const usePosts = (data) => {
     setActivePostsIds(allIds);
   }, [data]);
 
-  const getFilteredData = (keys) => {
+  const getFilteredData = (keys: IUsePostsFilteredKeys): string[] => {
     const { isShowFeatured, isShowNewest, searchValue } = keys;
-    let arr = [];
+    let arr: string[] = [];
     if (isShowFeatured && !isShowNewest) {
       arr = values.featuredIds;
     }
