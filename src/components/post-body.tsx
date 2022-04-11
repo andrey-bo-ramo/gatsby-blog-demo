@@ -1,16 +1,31 @@
 import React from "react";
-import { StructuredText } from "react-datocms";
+import {
+  StructuredText,
+  StructuredTextGraphQlResponse,
+  StructuredTextGraphQlResponseRecord,
+} from "react-datocms";
 import PostGallery from "./post-gallery";
 import { GatsbyImage } from "gatsby-plugin-image";
 import PostCarousel from "./post-carousel";
+import { IDatoCmsGalleryBlock, IDatoCmsQueryBlock } from "interfaces/common";
 
-export default function PostBody({ content }) {
+export default function PostBody({
+  content,
+}: {
+  content: StructuredTextGraphQlResponse;
+}) {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="prose prose-lg prose-blue">
         <StructuredText
           data={content}
-          renderBlock={({ record }) => {
+          renderBlock={({
+            record,
+          }: {
+            record: StructuredTextGraphQlResponse<
+              IDatoCmsGalleryBlock | IDatoCmsQueryBlock
+            >;
+          }) => {
             if (record.__typename === "DatoCmsImageBlock") {
               return (
                 <GatsbyImage image={record.image.gatsbyImageData} alt="" />
