@@ -12,7 +12,10 @@ export default function HeroPost({
   excerpt,
   author,
   slug,
-}: IPostNode) {
+}: Pick<
+  IPostNode,
+  "title" | "coverImage" | "date" | "excerpt" | "author" | "slug"
+>) {
   return (
     <section>
       <div className="mb-8 md:mb-16">

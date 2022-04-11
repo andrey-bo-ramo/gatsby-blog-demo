@@ -3,8 +3,36 @@ import { graphql } from "gatsby";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 import PageLayout from "../../components/page-layout";
 import Categories from "../../components/categories";
+import {
+  ICategoryNode,
+  IMetaTag,
+  ITitleTag,
+  ILinkTag,
+} from "interfaces/common";
 
-export default function CategoriesPage({ data: { allCategory, blog, site } }) {
+interface ICategoriesPageProps {
+  data: {
+    allCategory: {
+      nodes: ICategoryNode[];
+    };
+    blog: {
+      seo: {
+        tags: Array<IMetaTag | ITitleTag>;
+      };
+    };
+    site: {
+      favicon: {
+        tags: Array<ILinkTag | IMetaTag>;
+      };
+    };
+  };
+}
+
+export default function CategoriesPage(props: ICategoriesPageProps) {
+  const {
+    data: { allCategory, blog, site },
+  } = props;
+
   return (
     <>
       <HelmetDatoCms seo={blog.seo} favicon={site.favicon} />

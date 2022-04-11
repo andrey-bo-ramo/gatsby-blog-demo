@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function Intro(props) {
+interface IIntroProps {
+  title: string;
+}
+
+export default function Intro(props: IIntroProps) {
   const { title } = props;
   return (
     <section className="flex-col md:flex-row flex items-center md:justify-between mt-4 mb-16 md:mb-12">

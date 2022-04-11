@@ -1,7 +1,11 @@
 import React from "react";
-import { GatsbyImage } from "gatsby-plugin-image";
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 
-export default function PostGallery(props) {
+interface IPostGalleryProps {
+  images: Array<{ gatsbyImageData: IGatsbyImageData }>;
+}
+
+export default function PostGallery(props: IPostGalleryProps) {
   const { images } = props;
 
   return (

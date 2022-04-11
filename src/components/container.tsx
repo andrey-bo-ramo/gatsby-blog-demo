@@ -1,7 +1,7 @@
 import React from "react";
 
 interface IContainerProps {
-  children: Array<Element | JSX.Element>;
+  children: Element | JSX.Element | Array<Element | JSX.Element>;
 }
 
 export default function Container({ children }: IContainerProps) {

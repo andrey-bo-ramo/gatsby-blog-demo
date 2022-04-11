@@ -1,5 +1,11 @@
 import React from "react";
 
+interface IButtonProps {
+  text: string;
+  bg: string;
+  onClick: () => void;
+}
+
 function HOC(Component, params) {
   function Wrapper(props) {
     return <Component {...props} {...params} />;
@@ -7,7 +13,7 @@ function HOC(Component, params) {
   return Wrapper;
 }
 
-function Button(props) {
+function Button(props: IButtonProps) {
   const { text, bg, onClick } = props;
   return (
     <button

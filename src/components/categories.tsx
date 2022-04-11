@@ -1,8 +1,13 @@
 import React from "react";
 import { GatsbyImage } from "gatsby-plugin-image";
 import { Link } from "gatsby";
+import { ICategoryNode } from "interfaces/common";
 
-export default function Categories(props) {
+interface ICategoriesProps {
+  data: ICategoryNode[];
+}
+
+export default function Categories(props: ICategoriesProps) {
   const { data } = props;
 
   return (

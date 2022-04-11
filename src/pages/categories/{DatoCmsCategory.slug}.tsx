@@ -4,8 +4,34 @@ import { HelmetDatoCms } from "gatsby-source-datocms";
 import PageLayout from "../../components/page-layout";
 import HeroPost from "../../components/hero-post";
 import MoreStories from "../../components/more-stories";
+import {
+  ICategoryNode,
+  IPostNode,
+  IMetaTag,
+  ITitleTag,
+  ILinkTag,
+} from "interfaces/common";
 
-export default function CategoryPage(props) {
+interface ICategoryPageProps {
+  data: {
+    posts: {
+      nodes: IPostNode[];
+    };
+    blog: {
+      seo: {
+        tags: Array<IMetaTag | ITitleTag>;
+      };
+    };
+    site: {
+      favicon: {
+        tags: Array<ILinkTag | IMetaTag>;
+      };
+    };
+    category: ICategoryNode;
+  };
+}
+
+export default function CategoryPage(props: ICategoryPageProps) {
   const { data } = props;
   const { posts, blog, site, category } = data;
   const heroPost = posts.nodes[0];
@@ -15,17 +41,19 @@ export default function CategoryPage(props) {
     <>
       <HelmetDatoCms seo={blog.seo} favicon={site.favicon} />
       <PageLayout title={`Category/${category.name}`}>
-        {heroPost && (
-          <HeroPost
-            title={heroPost.title}
-            coverImage={heroPost.coverImage}
-            date={heroPost.date}
-            author={heroPost.author}
-            slug={heroPost.slug}
-            excerpt={heroPost.excerpt}
-          />
-        )}
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+        <>
+          {heroPost && (
+            <HeroPost
+              title={heroPost.title}
+              coverImage={heroPost.coverImage}
+              date={heroPost.date}
+              author={heroPost.author}
+              slug={heroPost.slug}
+              excerpt={heroPost.excerpt}
+            />
+          )}
+          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+        </>
       </PageLayout>
     </>
   );

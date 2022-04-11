@@ -39,6 +39,7 @@ export interface IPostNodeCategory {
 }
 
 export interface IDatoCmsQueryBlock {
+  [prop: string]: unknown;
   id: string;
   model: {
     apiKey: string;
@@ -48,12 +49,14 @@ export interface IDatoCmsQueryBlock {
 }
 
 export interface IDatoCmsGalleryBlock {
+  [prop: string]: unknown;
   id: string;
   model: {
     apiKey: string;
   };
   __typename: string;
   gallery: IGatsbyImageData[];
+  value?: unknown;
 }
 
 export interface IPostNode {
@@ -73,4 +76,12 @@ export interface IPostNode {
     tags: Array<IMetaTag | ITitleTag>;
   };
   content: Array<IDatoCmsGalleryBlock | IDatoCmsQueryBlock>;
+}
+
+export interface ICategoryNode {
+  name: string;
+  slug: string;
+  image: {
+    small: IGatsbyImageData;
+  };
 }

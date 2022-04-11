@@ -1,12 +1,17 @@
+import { IGatsbyImageData } from "gatsby-plugin-image";
 import React, { useState, useRef, useEffect } from "react";
 import { NextArrow, PrevArrow } from "./arrows";
 
-function PostCarousel(props) {
+interface IPostCarouselProps {
+  images: Array<{ gatsbyImageData: IGatsbyImageData }>;
+}
+
+function PostCarousel(props: IPostCarouselProps) {
   const { images } = props;
-  const maxScrollWidth = useRef(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const carousel = useRef(null);
-  const [pos, setPos] = useState(0);
+  const maxScrollWidth = useRef<number>(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const carousel = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<number>(0);
 
   const movePrev = () => {
     if (currentIndex > 0) {
@@ -23,7 +28,7 @@ function PostCarousel(props) {
     }
   };
 
-  const isDisabled = (direction) => {
+  const isDisabled = (direction: string) => {
     if (direction === "prev") {
       return currentIndex <= 0;
     }

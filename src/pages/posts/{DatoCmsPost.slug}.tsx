@@ -24,7 +24,7 @@ interface IPostPageProps {
 
 export default function Post(props: IPostPageProps) {
   const { morePosts, post, site } = props.data;
-  console.log("post", post);
+
   return (
     <>
       <HelmetDatoCms seo={post.seo} favicon={site.favicon} />
