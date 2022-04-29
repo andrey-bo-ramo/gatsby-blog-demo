@@ -5,7 +5,7 @@ import { graphql } from "gatsby";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 import PageLayout from "../components/page-layout";
 import { IPostNode, IMetaTag, ITitleTag, ILinkTag } from "interfaces/common";
-
+import { useWebWorker } from "../hooks/useWebWorker";
 interface IIndexProps {
   data: {
     allPosts: {
@@ -29,11 +29,29 @@ export default function Index(props: IIndexProps) {
   const heroPost = allPosts.nodes[0];
   const morePosts = allPosts.nodes.slice(1);
 
+  const countPostTitlesChars = (posts) => {
+    let res = 0;
+    posts.forEach((post) => {
+      res += post.title.length;
+    });
+    return res;
+  };
+
+  const { result, run } = useWebWorker(countPostTitlesChars);
+
+  const testWorker = () => {
+    run(allPosts.nodes);
+  };
+
   return (
     <>
       <HelmetDatoCms seo={blog.seo} favicon={site.favicon} />
       <PageLayout title="Test blog">
         <>
+          <div>
+            <button onClick={testWorker}>Count Posts Title Chars</button>
+            <p>Posts title chars: {result}</p>
+          </div>
           {heroPost && <HeroPost {...heroPost} />}
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
         </>

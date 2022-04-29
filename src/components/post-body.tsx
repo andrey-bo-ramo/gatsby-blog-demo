@@ -22,9 +22,7 @@ export default function PostBody({
           renderBlock={({
             record,
           }: {
-            record: StructuredTextGraphQlResponse<
-              IDatoCmsGalleryBlock | IDatoCmsQueryBlock
-            >;
+            record: IDatoCmsGalleryBlock | IDatoCmsQueryBlock;
           }) => {
             if (record.__typename === "DatoCmsImageBlock") {
               return (
